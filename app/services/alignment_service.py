@@ -4,6 +4,7 @@ from core.traceback import perform_traceback
 from core.validation import validate_alignment_input
 from core.visualization import prepare_matrix_for_ui
 from core.explanations import get_algorithm_explanations
+from .history_service import HistoryService
 
 class AlignmentService:
     @staticmethod
@@ -40,6 +41,12 @@ class AlignmentService:
             traceback_path=path,
             parameters=params
         )
+        
+        # Save to history
+        try:
+            HistoryService.save_alignment(params, result)
+        except Exception as e:
+            print(f"Failed to save history: {e}")
         
         # Get UI data and explanations
         ui_data = prepare_matrix_for_ui(result)

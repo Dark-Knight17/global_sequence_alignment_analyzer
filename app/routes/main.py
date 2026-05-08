@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.services.alignment_service import AlignmentService
+from app.services.history_service import HistoryService
 
 main_bp = Blueprint('main', __name__)
 
@@ -15,3 +16,9 @@ def align():
         
     result = AlignmentService.run_alignment(data)
     return jsonify(result)
+
+@main_bp.route('/history', methods=['GET'])
+def history():
+    limit = request.args.get('limit', 10, type=int)
+    history_data = HistoryService.get_history(limit)
+    return jsonify({"success": True, "history": history_data})

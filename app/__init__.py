@@ -10,6 +10,10 @@ def create_app():
     except OSError:
         pass
     
+    with app.app_context():
+        from .services.history_service import HistoryService
+        HistoryService.init_db()
+    
     # Register blueprints
     from .routes.main import main_bp
     app.register_blueprint(main_bp)
