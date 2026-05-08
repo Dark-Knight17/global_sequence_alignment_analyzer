@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Sequence Alignment Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Global Sequence Alignment Analyzer</h1>
+            <p>Educational tool for biological sequence analysis using Needleman-Wunsch.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="input-section" class="card">
+            <h2>1. Configuration</h2>
+            <form id="alignment-form">
+                <div class="form-group">
+                    <label for="sequence_1">Sequence 1 (Top)</label>
+                    <input type="text" id="sequence_1" name="sequence_1" placeholder="e.g. GATTACA" required>
+                </div>
+                <div class="form-group">
+                    <label for="sequence_2">Sequence 2 (Left)</label>
+                    <input type="text" id="sequence_2" name="sequence_2" placeholder="e.g. GCATGCU" required>
+                </div>
+                
+                <div class="scoring-grid">
+                    <div class="form-group">
+                        <label for="match_score">Match Score</label>
+                        <input type="number" id="match_score" name="match_score" value="1" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="mismatch_score">Mismatch Penalty</label>
+                        <input type="number" id="mismatch_score" name="mismatch_score" value="-1" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="gap_penalty">Gap Penalty</label>
+                        <input type="number" id="gap_penalty" name="gap_penalty" value="-2" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="optimization_mode">Optimization</label>
+                        <select id="optimization_mode" name="optimization_mode">
+                            <option value="similarity">Similarity (Maximize)</option>
+                            <option value="distance">Distance (Minimize)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">Analyze Sequence Alignment</button>
+            </form>
+        </section>
+
+        <div id="loading" class="hidden">Processing alignment...</div>
+        <div id="error-message" class="error hidden"></div>
+
+        <section id="results-section" class="hidden">
+            <div class="card">
+                <h2>2. Alignment Result</h2>
+                <div id="alignment-output" class="mono-text"></div>
+                <div id="final-score" class="score-display"></div>
+            </div>
+
+            <div class="card">
+                <h2>3. Dynamic Programming Matrix</h2>
+                <div class="matrix-container">
+                    <table id="dp-matrix"></table>
+                </div>
+                <p class="legend"><span class="path-cell"></span> Traceback Path</p>
+            </div>
+
+            <div id="explanations-section" class="explanation-grid">
+                <!-- Explanations will be injected here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Global Sequence Alignment Analyzer | Bioinformatics Education</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
