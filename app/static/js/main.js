@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsSection = document.getElementById('results-section');
     const loading = document.getElementById('loading');
     const errorDiv = document.getElementById('error-message');
+    const historyList = document.getElementById('history-list');
+    const refreshHistoryBtn = document.getElementById('refresh-history');
+
+    // Load history on startup
+    loadHistory();
+
+    refreshHistoryBtn.addEventListener('click', loadHistory);
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -27,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 renderResults(result.result);
                 resultsSection.classList.remove('hidden');
+                loadHistory(); // Refresh history after new alignment
             } else {
                 showError(result.error);
             }
@@ -37,6 +45,35 @@ document.addEventListener('DOMContentLoaded', () => {
             loading.classList.add('hidden');
         }
     });
+
+    async function loadHistory() {
+        try {
+            const response = await fetch('/history?limit=5');
+            const data = await response.json();
+            if (data.success) {
+                renderHistory(data.history);
+            }
+        } catch (err) {
+            console.error("Failed to load history", err);
+        }
+    }
+
+    function renderHistory(history) {
+        if (!history || history.length === 0) {
+            historyList.innerHTML = '<p>No recent alignments found.</p>';
+            return;
+        }
+
+        historyList.innerHTML = history.map(item => `
+            <div class="history-item">
+                <div class="history-info">
+                    <div class="history-seqs">${item.sequence_1} vs ${item.sequence_2}</div>
+                    <div class="history-meta">${item.optimization_mode} | Match: ${item.match_score} | Score: ${item.final_score}</div>
+                </div>
+                <div class="history-time">${new Date(item.timestamp).toLocaleString()}</div>
+            </div>
+        `).join('');
+    }
 
     function renderResults(data) {
         // Render Alignment

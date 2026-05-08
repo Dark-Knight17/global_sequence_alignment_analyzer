@@ -142,6 +142,36 @@ th { background-color: #f2f2f2; }
 
 .explanation-card h3 { margin-top: 0; color: var(--primary); }
 
+.btn-outline {
+    background: transparent;
+    color: var(--secondary);
+    border: 1px solid var(--secondary);
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s;
+}
+
+.btn-outline:hover {
+    background: var(--secondary);
+    color: white;
+}
+
+.history-item {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item:last-child { border-bottom: none; }
+
+.history-info { font-size: 0.9rem; }
+.history-seqs { font-weight: bold; color: var(--primary); }
+.history-meta { color: #7f8c8d; font-size: 0.8rem; }
+
 footer {
     text-align: center;
     margin-top: 50px;
