@@ -2,6 +2,8 @@ from core.models import AlignmentParameters, AlignmentResult
 from core.alignment import compute_needleman_wunsch
 from core.traceback import perform_traceback
 from core.validation import validate_alignment_input
+from core.visualization import prepare_matrix_for_ui
+from core.explanations import get_algorithm_explanations
 
 class AlignmentService:
     @staticmethod
@@ -39,4 +41,18 @@ class AlignmentService:
             parameters=params
         )
         
-        return {"success": True, "result": result}
+        # Get UI data and explanations
+        ui_data = prepare_matrix_for_ui(result)
+        explanations = get_algorithm_explanations(result)
+        
+        return {
+            "success": True, 
+            "result": {
+                "aligned_seq1": result.aligned_seq1,
+                "aligned_seq2": result.aligned_seq2,
+                "markers": result.markers,
+                "score": result.score,
+                "matrix_data": ui_data,
+                "explanations": explanations
+            }
+        }
